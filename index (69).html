@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مسابقة المواهب - خدمة فتيان إعدادي - كنيسة مارمينا الفيوم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.13/html-to-image.min.js"></script>
+<style>
+  :root{
+    --curtain:#3a140a;
+    --curtain-dark:#210b05;
+    --stage:#241009;
+    --stage-mid:#3a1a0d;
+    --paper:#fbf1e0;
+    --paper-shadow:#e8d8b8;
+    --ink:#2b1608;
+    --ink-soft:#5c4530;
+    --orange:#ff7a3d;
+    --orange-deep:#e05a1f;
+    --gold:#ffbf5e;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Cairo',sans-serif;
+    background:radial-gradient(ellipse at 50% -10%, var(--stage-mid), var(--stage) 65%);
+    color:var(--paper);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  /* ================= curtain intro ================= */
+  .curtain{position:fixed; top:0; bottom:0; width:52%; z-index:50; pointer-events:none;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 14px, rgba(255,255,255,.03) 14px 28px),
+      linear-gradient(180deg, var(--curtain), var(--curtain-dark));
+    box-shadow:inset -20px 0 40px rgba(0,0,0,.4);
+  }
+  .curtain-left{left:0; border-radius:0 0 60px 0; animation:openLeft 1.3s .5s cubic-bezier(.6,0,.2,1) forwards;}
+  .curtain-right{right:0; border-radius:0 0 0 60px; animation:openRight 1.3s .5s cubic-bezier(.6,0,.2,1) forwards;}
+  @keyframes openLeft{to{transform:translateX(-105%);}}
+  @keyframes openRight{to{transform:translateX(105%);}}
+  .curtain-swag{position:absolute; top:0; left:0; right:0; height:64px;
+    background:linear-gradient(180deg, var(--curtain-dark), transparent);}
+
+  /* ================= ambient scene ================= */
+  .scene{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
+  .spotlight{position:absolute; top:-25%; left:50%; width:70vw; height:70vw; transform:translateX(-50%);
+    background:radial-gradient(ellipse at center, rgba(255,190,110,.16), transparent 60%);
+    animation:sway 9s ease-in-out infinite;}
+  @keyframes sway{0%,100%{transform:translateX(-54%) rotate(-2deg);} 50%{transform:translateX(-46%) rotate(2deg);}}
+  .floor-glow{position:absolute; bottom:0; left:0; right:0; height:40%;
+    background:radial-gradient(ellipse at 50% 100%, rgba(255,122,61,.14), transparent 70%);}
+
+  .floaters{position:absolute; inset:0;}
+  .floater{position:absolute; bottom:-60px; opacity:0; animation-name:riseUp; animation-timing-function:linear; animation-iteration-count:infinite;}
+  @keyframes riseUp{
+    0%{transform:translateY(0); opacity:0;}
+    8%{opacity:.95;}
+    88%{opacity:.8;}
+    100%{transform:translateY(-112vh); opacity:0;}
+  }
+  .f-bob{animation-name:riseBob;}
+  @keyframes riseBob{
+    0%{transform:translateY(0) translateX(0); opacity:0;}
+    8%{opacity:.95;}
+    25%{transform:translateY(-25vh) translateX(14px);}
+    50%{transform:translateY(-50vh) translateX(-14px);}
+    75%{transform:translateY(-78vh) translateX(14px);}
+    88%{opacity:.8;}
+    100%{transform:translateY(-112vh) translateX(0); opacity:0;}
+  }
+  .f-spin{animation-name:riseSpin;}
+  @keyframes riseSpin{
+    0%{transform:translateY(0) rotate(0deg); opacity:0;}
+    8%{opacity:.95;}
+    88%{opacity:.8;}
+    100%{transform:translateY(-112vh) rotate(520deg); opacity:0;}
+  }
+  .f-sway{animation-name:riseSway;}
+  @keyframes riseSway{
+    0%{transform:translateY(0) rotate(-8deg); opacity:0;}
+    8%{opacity:.95;}
+    30%{transform:translateY(-30vh) rotate(10deg);}
+    60%{transform:translateY(-65vh) rotate(-10deg);}
+    88%{opacity:.8;}
+    100%{transform:translateY(-112vh) rotate(8deg); opacity:0;}
+  }
+  .f-twinkle{animation-name:riseTwinkle;}
+  @keyframes riseTwinkle{
+    0%{transform:translateY(0) scale(.6); opacity:0;}
+    8%{opacity:1;}
+    20%{transform:translateY(-18vh) scale(1.1);}
+    35%{transform:translateY(-36vh) scale(.6);}
+    50%{transform:translateY(-54vh) scale(1.1);}
+    65%{transform:translateY(-72vh) scale(.6);}
+    88%{opacity:.9;}
+    100%{transform:translateY(-112vh) scale(1); opacity:0;}
+  }
+
+  /* ================= layout ================= */
+  .wrap{position:relative; z-index:2; max-width:740px; margin:0 auto; padding:40px 18px 60px;}
+  header.hero{text-align:center; margin-bottom:26px;}
+  .cross{font-size:28px; color:var(--gold); display:block; margin-bottom:8px; text-shadow:0 0 16px rgba(255,191,94,.55);}
+  h1.title{font-family:'Lalezar',sans-serif; font-size:44px; margin:2px 0 10px; letter-spacing:1px;
+    color:var(--gold); text-shadow:0 0 24px rgba(255,122,61,.4), 0 2px 0 rgba(0,0,0,.3);}
+  .subtitle{font-size:14px; color:#f2dcc0; margin:0; line-height:1.9;}
+
+  .lights{display:flex; justify-content:center; gap:9px; margin:16px 0 6px;}
+  .lights span{width:8px; height:8px; border-radius:50%; background:var(--gold); opacity:.3;
+    animation:bulb 1.6s ease-in-out infinite; box-shadow:0 0 6px rgba(255,191,94,.7);}
+  @keyframes bulb{0%,100%{opacity:.25; transform:scale(.85);} 50%{opacity:1; transform:scale(1.15);}}
+
+  .card{
+    background:var(--paper); color:var(--ink); border-radius:18px;
+    padding:28px 24px; position:relative;
+    box-shadow:0 24px 55px rgba(0,0,0,.45), 0 0 0 1px var(--paper-shadow);
+  }
+  .card:before{
+    content:""; position:absolute; inset:0; border-radius:18px; padding:2px;
+    background:linear-gradient(120deg, var(--gold), var(--orange), var(--gold));
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; opacity:.7;
+    pointer-events:none;
+  }
+  .card h2{font-family:'Lalezar',sans-serif; font-weight:400; font-size:23px; color:var(--orange-deep); margin:0 0 6px; letter-spacing:.5px;}
+  .card .hint{font-size:12.5px; color:var(--ink-soft); margin:0 0 20px;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--orange-deep);}
+  .field label .opt{font-weight:500; color:var(--ink-soft); font-size:11.5px;}
+  .field input, .field select{
+    width:100%; padding:12px 14px; border-radius:11px; border:1.4px solid #e2cfa8;
+    background:#fffdf8; color:var(--ink); font-family:'Cairo',sans-serif; font-size:15px; outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .field input::placeholder{color:#b19a72;}
+  .field input:focus, .field select:focus{border-color:var(--orange); box-shadow:0 0 0 3px rgba(255,122,61,.18);}
+
+  .talents-grid{display:grid; grid-template-columns:1fr; gap:14px; margin:6px 0 4px;}
+  .field.talent{position:relative;}
+  .field.talent .t-icon{position:absolute; left:14px; top:38px; font-size:16px; opacity:.55; pointer-events:none;}
+  .field.talent input{padding-left:38px;}
+
+  .submit-btn{
+    width:100%; margin-top:14px; padding:14px; border:none; border-radius:13px; cursor:pointer;
+    font-family:'Cairo',sans-serif; font-weight:800; font-size:16px; letter-spacing:.3px;
+    background:linear-gradient(135deg, var(--orange-deep), var(--orange));
+    color:#fff5e8;
+    box-shadow:0 10px 24px rgba(224,90,31,.35);
+    transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .submit-btn:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(224,90,31,.45);}
+  .submit-btn:active{transform:scale(.97);}
+  .submit-btn:disabled{opacity:.6; cursor:not-allowed; transform:none;}
+
+  .form-msg{margin-top:14px; padding:12px 14px; border-radius:10px; font-size:14px; display:none;}
+  .form-msg.error{display:block; background:#fbe2da; border:1px solid #e79b7f; color:#8a2f10;}
+  .form-msg.info{display:block; background:#fff1da; border:1px solid #f0c37a; color:#8a5a10;}
+
+  .hidden{display:none !important;}
+
+  /* ================= ticket ================= */
+  .ticket-wrap{display:flex; flex-direction:column; align-items:center; gap:16px;}
+  .ticket{
+    width:100%; max-width:410px; background:var(--paper); color:var(--ink); border-radius:16px;
+    position:relative; padding:26px 22px 20px; box-shadow:0 25px 60px rgba(0,0,0,.5);
+    border:2px solid var(--gold);
+    animation:ticketPop .55s cubic-bezier(.2,1.3,.4,1);
+  }
+  @keyframes ticketPop{0%{transform:scale(.75) rotate(-3deg); opacity:0;} 100%{transform:scale(1) rotate(0); opacity:1;}}
+  .ticket:before, .ticket:after{
+    content:""; position:absolute; width:20px; height:20px; background:var(--stage); border-radius:50%;
+    top:50%; transform:translateY(-50%);
+  }
+  .ticket:before{left:-10px;}
+  .ticket:after{right:-10px;}
+  .ticket .perf{border-top:2px dashed #d8c39a; margin:16px 0;}
+  .ticket .seal{width:52px; height:52px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold), var(--orange) 65%, var(--orange-deep));
+    display:flex; align-items:center; justify-content:center; margin:0 auto 6px;
+    box-shadow:0 4px 12px rgba(224,90,31,.4); font-size:22px; color:#fff;}
+  .ticket .church-line{text-align:center; font-size:11.5px; color:var(--ink-soft); line-height:1.7; margin-bottom:4px;}
+  .ticket .church-line b{color:var(--orange-deep); display:block; font-size:13px;}
+  .ticket h3.event{text-align:center; font-family:'Lalezar',sans-serif; font-size:19px; color:var(--orange-deep); margin:2px 0 12px; letter-spacing:.5px;}
+
+  .participant-label{text-align:center; font-size:12px; letter-spacing:2px; color:#9a7a4a; margin-bottom:2px;}
+  .participant-number{text-align:center; font-family:'Lalezar',sans-serif; font-size:56px; color:var(--orange-deep); line-height:1;
+    animation:numberPop .55s ease .1s both;}
+  @keyframes numberPop{0%{transform:scale(0);} 70%{transform:scale(1.15);} 100%{transform:scale(1);}}
+  .participant-name{text-align:center; font-size:16.5px; font-weight:800; margin-top:6px;}
+  .participant-stage{text-align:center; font-size:13px; color:var(--ink-soft); margin-top:2px;}
+
+  .talents-list{margin-top:6px;}
+  .talents-list .t-row{display:flex; align-items:center; gap:10px; background:#fbe9d6;
+    border:1px solid #eecfa0; border-radius:10px; padding:9px 12px; margin-bottom:8px; font-size:13.5px;}
+  .talents-list .t-num{width:22px; height:22px; border-radius:50%; background:var(--orange-deep); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0;}
+  .talents-list .t-name{font-weight:700;}
+
+  .ticket-actions{display:flex; gap:10px; width:100%; max-width:410px;}
+  .ticket-actions button{flex:1; padding:12px; border-radius:12px; border:1px solid rgba(255,191,94,.5);
+    background:rgba(255,255,255,.06); color:var(--paper); font-family:'Cairo',sans-serif; font-weight:700; cursor:pointer;
+    transition:transform .15s;}
+  .ticket-actions button:hover{transform:translateY(-2px);}
+  .ticket-actions button.primary{background:linear-gradient(135deg, var(--orange-deep), var(--gold)); color:#2b1608; border:none;}
+
+  footer.site-footer{text-align:center; font-size:11.5px; color:#c9a67a; margin-top:36px; line-height:1.9;}
+
+  @media print{
+    body{background:white !important;}
+    .scene, .curtain, header.hero, .ticket-actions, footer.site-footer{display:none !important;}
+    .wrap{max-width:100%; padding:0;}
+    .ticket{box-shadow:none; margin:0 auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="curtain curtain-left"><div class="curtain-swag"></div></div>
+<div class="curtain curtain-right"><div class="curtain-swag"></div></div>
+
+<div class="scene">
+  <div class="spotlight"></div>
+  <div class="floor-glow"></div>
+  <div class="floaters" id="floaters"></div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="cross">✝</span>
+    <h1 class="title">مسابقة المواهب</h1>
+    <p class="subtitle">خدمة فتيان إعدادي — سجّل بياناتك واعرض مواهبك على المسرح 🎨🎤🎵</p>
+    <div class="lights">
+      <span style="animation-delay:0s"></span><span style="animation-delay:.2s"></span>
+      <span style="animation-delay:.4s"></span><span style="animation-delay:.6s"></span>
+      <span style="animation-delay:.8s"></span>
+    </div>
+  </header>
+
+  <section id="screen-register">
+    <div class="card">
+      <h2>استمارة الاشتراك</h2>
+      <p class="hint">اكتب حتى 3 مواهب — تقدر تكتب موهبة واحدة بس لو حابب.</p>
+      <form id="regForm" autocomplete="off">
+        <div class="field">
+          <label for="pName">الاسم بالكامل</label>
+          <input type="text" id="pName" placeholder="اكتب اسمك بالكامل" required>
+        </div>
+        <div class="field">
+          <label for="pCode">الكود</label>
+          <input type="text" id="pCode" placeholder="اكتب الكود بتاعك" required>
+        </div>
+        <div class="field">
+          <label for="pStage">المرحلة</label>
+          <select id="pStage" required>
+            <option value="" disabled selected>اختر مرحلتك</option>
+            <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+            <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+            <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+          </select>
+        </div>
+
+        <div class="talents-grid">
+          <div class="field talent">
+            <label for="t1">الموهبة الأولى</label>
+            <span class="t-icon">🎯</span>
+            <input type="text" id="t1" placeholder="اكتب موهبتك" required>
+          </div>
+          <div class="field talent">
+            <label for="t2">الموهبة الثانية <span class="opt">(اختياري)</span></label>
+            <span class="t-icon">🎯</span>
+            <input type="text" id="t2" placeholder="اكتب موهبتك (اختياري)">
+          </div>
+          <div class="field talent">
+            <label for="t3">الموهبة الثالثة <span class="opt">(اختياري)</span></label>
+            <span class="t-icon">🎯</span>
+            <input type="text" id="t3" placeholder="اكتب موهبتك (اختياري)">
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">سجّل الآن</button>
+        <div class="form-msg" id="formMsg"></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="hidden" id="screen-ticket">
+    <div class="ticket-wrap">
+      <div class="ticket" id="ticketCard">
+        <div class="seal">✝</div>
+        <div class="church-line">
+          <b>كنيسة الشهيد العظيم مارمينا - الفيوم</b>
+          مطرانية الأقباط الأرثوذكس بالفيوم — خدمة فتيان إعدادي
+        </div>
+        <h3 class="event">استمارة الاشتراك في مسابقة المواهب</h3>
+
+        <div class="participant-label">رقم المشترك</div>
+        <div class="participant-number" id="ticketNumber">0</div>
+        <div class="participant-name" id="ticketName">--</div>
+        <div class="participant-stage" id="ticketStage">--</div>
+
+        <div class="perf"></div>
+
+        <div class="talents-list" id="ticketTalents"></div>
+      </div>
+
+      <div class="ticket-actions">
+        <button class="primary" id="downloadBtn" onclick="downloadTicketImage()">⬇️ تحميل الاستمارة كصورة</button>
+        <button onclick="location.reload()">تسجيل مشترك جديد</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    خدمة فتيان إعدادي — كنيسة الشهيد العظيم مارمينا بالفيوم
+  </footer>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4iZMCnmlnm6pimJfFP-S6wx7eMpcwvOgVt2qWH2YGGdCih0uCjN_AK6OqdkzUB6-F4g/exec";
+
+  const floaterSet = [
+    {icon:"🎨", cls:"f-sway"},
+    {icon:"🖌️", cls:"f-sway"},
+    {icon:"🎵", cls:"f-bob"},
+    {icon:"🎶", cls:"f-bob"},
+    {icon:"🎤", cls:"f-twinkle"},
+    {icon:"⚽", cls:"f-spin"},
+    {icon:"🎭", cls:"f-sway"},
+    {icon:"⭐", cls:"f-twinkle"},
+    {icon:"🏆", cls:"f-bob"},
+    {icon:"🎬", cls:"f-sway"},
+    {icon:"📷", cls:"f-twinkle"},
+    {icon:"✏️", cls:"f-spin"}
+  ];
+  const floatersEl = document.getElementById('floaters');
+  const FLOATER_COUNT = window.innerWidth < 600 ? 12 : 20;
+  for (let i = 0; i < FLOATER_COUNT; i++) {
+    const pick = floaterSet[Math.floor(Math.random() * floaterSet.length)];
+    const span = document.createElement('span');
+    span.className = 'floater ' + pick.cls;
+    span.textContent = pick.icon;
+    span.style.left = (Math.random() * 94) + '%';
+    span.style.fontSize = (18 + Math.random() * 16) + 'px';
+    const duration = 11 + Math.random() * 10;
+    span.style.animationDuration = duration + 's';
+    span.style.animationDelay = (Math.random() * duration) + 's';
+    floatersEl.appendChild(span);
+  }
+
+  const form = document.getElementById('regForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formMsg = document.getElementById('formMsg');
+
+  function showMsg(text, type){
+    formMsg.textContent = text;
+    formMsg.className = 'form-msg ' + type;
+  }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    formMsg.className = 'form-msg';
+
+    const name = document.getElementById('pName').value.trim();
+    const code = document.getElementById('pCode').value.trim();
+    const stage = document.getElementById('pStage').value;
+    const t1 = document.getElementById('t1').value.trim();
+    const t2 = document.getElementById('t2').value.trim();
+    const t3 = document.getElementById('t3').value.trim();
+    const talents = [t1, t2, t3].filter(t => t !== '');
+
+    if(!name || !code || !stage || talents.length === 0){
+      showMsg('من فضلك املأ بياناتك واكتب موهبة واحدة على الأقل.', 'error');
+      return;
+    }
+    const talentsLower = talents.map(t => t.toLowerCase());
+    if (new Set(talentsLower).size !== talents.length){
+      showMsg('المواهب اللي كتبتها لازم تكون مختلفة عن بعض.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جاري التسجيل...';
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain;charset=utf-8'},
+        body: JSON.stringify({name, code, stage, t1, t2, t3})
+      });
+      const data = await res.json();
+
+      if (data.status === 'success'){
+        showTicket({number:data.participantNumber, name, stage, talents});
+      } else {
+        showMsg(data.message || 'حصل خطأ أثناء التسجيل، حاول تاني.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'سجّل الآن';
+      }
+    } catch(err){
+      showMsg('في مشكلة في الاتصال، تأكد من الإنترنت وحاول تاني.', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'سجّل الآن';
+    }
+  });
+
+  function showTicket(p){
+    document.getElementById('screen-register').classList.add('hidden');
+    const ticketScreen = document.getElementById('screen-ticket');
+    ticketScreen.classList.remove('hidden');
+    document.getElementById('ticketNumber').textContent = p.number;
+    document.getElementById('ticketName').textContent = p.name;
+    document.getElementById('ticketStage').textContent = p.stage;
+    const list = document.getElementById('ticketTalents');
+    list.innerHTML = '';
+    p.talents.forEach((t, idx) => {
+      const row = document.createElement('div');
+      row.className = 't-row';
+      row.innerHTML = `<span class="t-num">${idx+1}</span><span class="t-name">${t}</span>`;
+      list.appendChild(row);
+    });
+    ticketScreen.scrollIntoView({behavior:'smooth'});
+  }
+
+  async function downloadTicketImage(){
+    const btn = document.getElementById('downloadBtn');
+    const card = document.getElementById('ticketCard');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'جاري تجهيز الصورة...';
+    try {
+      // نتأكد إن الخطوط اتحملت خالص قبل التصوير عشان الحروف متطلعش بايظة
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+      // مسافة بسيطة قبل التصوير تضمن إن كل حاجة اتظبطت على الشاشة
+      await new Promise(r => setTimeout(r, 100));
+
+      const dataUrl = await htmlToImage.toPng(card, {
+        backgroundColor: '#fbf1e0',
+        pixelRatio: 3,
+        cacheBust: true,
+        width: card.offsetWidth,
+        height: card.offsetHeight
+      });
+
+      const number = document.getElementById('ticketNumber').textContent;
+      const link = document.createElement('a');
+      link.download = 'استمارة-مشترك-' + number + '.png';
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      alert('حصل خطأ أثناء تجهيز الصورة، حاول تاني.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  }
+</script>
+</body>
+</html>
